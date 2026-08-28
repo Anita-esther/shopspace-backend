@@ -113,4 +113,44 @@ async function getCurrentUser(req, res) {
   }
 }
 
-module.exports = { register, login, getCurrentUser };
+// PUT /api/auth/me  (requires auth)
+async function updateProfile(req, res) {
+  try {
+    const { full_name, phone_number, matric_number, profile_image } = req.body;
+
+    await pool.query(
+      `UPDATE users SET
+        full_name = COALESCE(?, full_name),
+        phone_number = COALESCE(?, phone_number),
+        matric_number = COALESCE(?, matric_number),
+        profile_image = COALESCE(?, profile_image)
+       WHERE user_id = ?`,
+      [full_name, phone_number, matric_number, profile_image, req.user.userId]
+    );
+
+    const [rows] = await pool.query('SELECT * FROM users WHERE user_id = ?', [req.user.userId]);
+    res.json({ status: 'ok', message: 'Profile updated', user: toPublicUser(rows[0]) });
+  } catch (err) {
+    console.error('Update profile error:', err.message);
+    res.status(500).json({ status: 'error', message: 'Failed to update profile' });
+  }
+}
+
+// GET /api/auth/user/:id  (public - minimal info only, for showing chat contact names)
+async function getUserById(req, res) {
+  try {
+    const [rows] = await pool.query(
+      'SELECT user_id, full_name, profile_image FROM users WHERE user_id = ?',
+      [req.params.id]
+    );
+    if (rows.length === 0) {
+      return res.status(404).json({ status: 'error', message: 'User not found' });
+    }
+    res.json({ status: 'ok', user: rows[0] });
+  } catch (err) {
+    console.error('Get user by id error:', err.message);
+    res.status(500).json({ status: 'error', message: 'Something went wrong' });
+  }
+}
+
+module.exports = { register, login, getCurrentUser, getUserById, updateProfile };

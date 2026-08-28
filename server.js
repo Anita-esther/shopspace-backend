@@ -4,6 +4,10 @@ require('dotenv').config();
 
 const healthRoutes = require('./routes/health');
 const authRoutes = require('./routes/auth');
+const productsRoutes = require('./routes/products');
+const categoriesRoutes = require('./routes/categories');
+const messagesRoutes = require('./routes/messages');
+const transactionsRoutes = require('./routes/transactions');
 
 const app = express();
 
@@ -14,6 +18,10 @@ app.use(express.json());      // Parse JSON request bodies
 // --- Routes ---
 app.use('/api/health', healthRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/products', productsRoutes);
+app.use('/api/categories', categoriesRoutes);
+app.use('/api/messages', messagesRoutes);
+app.use('/api/transactions', transactionsRoutes);
 
 // Placeholder for upcoming route groups:
 // app.use('/api/products', require('./routes/products'));
