@@ -10,6 +10,7 @@ const messagesRoutes = require('./routes/messages');
 const transactionsRoutes = require('./routes/transactions');
 const reviewsRoutes = require('./routes/reviews');
 const uploadsRoutes = require('./routes/uploads');
+const adminRoutes = require('./routes/admin');
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use('/api/messages', messagesRoutes);
 app.use('/api/transactions', transactionsRoutes);
 app.use('/api/reviews', reviewsRoutes);
 app.use('/api/uploads', uploadsRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Placeholder for upcoming route groups:
 // app.use('/api/products', require('./routes/products'));
