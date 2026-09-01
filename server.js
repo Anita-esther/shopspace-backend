@@ -8,6 +8,7 @@ const productsRoutes = require('./routes/products');
 const categoriesRoutes = require('./routes/categories');
 const messagesRoutes = require('./routes/messages');
 const transactionsRoutes = require('./routes/transactions');
+const reviewsRoutes = require('./routes/reviews');
 
 const app = express();
 
@@ -22,13 +23,13 @@ app.use('/api/products', productsRoutes);
 app.use('/api/categories', categoriesRoutes);
 app.use('/api/messages', messagesRoutes);
 app.use('/api/transactions', transactionsRoutes);
+app.use('/api/reviews', reviewsRoutes);
 
 // Placeholder for upcoming route groups:
 // app.use('/api/products', require('./routes/products'));
 // app.use('/api/categories', require('./routes/categories'));
 // app.use('/api/messages', require('./routes/messages'));
 // app.use('/api/transactions', require('./routes/transactions'));
-// app.use('/api/reviews', require('./routes/reviews'));
 // app.use('/api/reports', require('./routes/reports'));
 // app.use('/api/notifications', require('./routes/notifications'));
 

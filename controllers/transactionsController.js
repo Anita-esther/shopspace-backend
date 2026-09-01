@@ -109,14 +109,16 @@ async function getMyTransactions(req, res) {
     const [rows] = await pool.query(
       `SELECT t.*,
               p.title AS product_title, p.image_url AS product_image_url,
-              b.full_name AS buyer_name, s.full_name AS seller_name
+              b.full_name AS buyer_name, s.full_name AS seller_name,
+              (r.review_id IS NOT NULL) AS reviewed_by_me
        FROM transactions t
        JOIN products p ON p.product_id = t.product_id
        JOIN users b ON b.user_id = t.buyer_id
        JOIN users s ON s.user_id = t.seller_id
+       LEFT JOIN reviews r ON r.transaction_id = t.transaction_id AND r.reviewer_id = ?
        WHERE t.buyer_id = ? OR t.seller_id = ?
        ORDER BY t.created_at DESC`,
-      [userId, userId]
+      [userId, userId, userId]
     );
 
     res.json({ status: 'ok', transactions: rows });
